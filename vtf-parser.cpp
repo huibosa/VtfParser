@@ -1,4 +1,4 @@
-#include "VtfParser.h"
+#include "vtf-parser.h"
 
 void VtfParser::processColumns() {
   th.deleteQuotes(columns);
@@ -48,28 +48,28 @@ void VtfParser::vtfToCsv(const std::string &inFile) {
   writeOutput(outFile);
 }
 
-void VtfParser::TextHelper::deleteQuotes(std::string& str) {
+void VtfParser::TextHelper::deleteQuotes(std::string &str) {
   std::string::size_type pos;
   while ((pos = str.find('\"')) != std::string::npos) {
     str.erase(pos, 1);
   }
 }
 
-void VtfParser::TextHelper::deleteSpaces(std::string& str) {
+void VtfParser::TextHelper::deleteSpaces(std::string &str) {
   std::string::size_type pos;
   while ((pos = str.find(' ')) != std::string::npos) {
     str.erase(pos, 1);
   }
 }
 
-void VtfParser::TextHelper::tabToComma(std::string& str) {
+void VtfParser::TextHelper::tabToComma(std::string &str) {
   std::string::size_type pos;
   while ((pos = str.find('\t')) != std::string::npos) {
     str.replace(pos, 1, ",");
     ++pos;
   }
 
-  std::string::size_type temp; 
+  std::string::size_type temp;
   if ((temp = str.rfind(',')) == str.size() - 2) {
     str.erase(temp, 1);
   }
@@ -83,7 +83,8 @@ std::string VtfParser::TextHelper::formatFileNmae(const std::string &src) {
   return ret;
 }
 
-void VtfParser::TextHelper::changeSuffix(std::string &src, const std::string &suffix) {
+void VtfParser::TextHelper::changeSuffix(std::string &src,
+                                         const std::string &suffix) {
   auto pos = src.rfind('.');
   src.erase(pos, src.size() - pos);
   src += suffix;
@@ -91,13 +92,13 @@ void VtfParser::TextHelper::changeSuffix(std::string &src, const std::string &su
 
 // remove "1_" or "1" in filename
 void VtfParser::TextHelper::sensorFormat(std::string &str) {
-  std::string pattern1("sensors1_");    // billet_sensors11.vtf
-  std::string pattern2("sensors1");     // billet_sensors1_1.vtf
+  std::string pattern1("sensors1_"); // billet_sensors11.vtf
+  std::string pattern2("sensors1");  // billet_sensors1_1.vtf
   std::string::size_type pos;
 
   if ((pos = str.find(pattern1)) != std::string::npos) {
-    str.erase(pos + 7, 2);  // "sensor".lengh() - 1 == 7
+    str.erase(pos + 7, 2); // "sensor".lengh() - 1 == 7
   } else if ((pos = str.find(pattern2)) != std::string::npos) {
-    str.erase(pos + 7 , 1);
+    str.erase(pos + 7, 1);
   }
 };
