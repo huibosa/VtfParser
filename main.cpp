@@ -1,4 +1,4 @@
-#include "VtfParser.h"
+#include "vtf-parser.h"
 #include <cstdio>
 #include <filesystem>
 #include <iostream>

@@ -7,15 +7,15 @@ void VtfParser::processColumns() {
 }
 
 void VtfParser::processValues() {
-  for (auto &val : values) {
+  for (auto& val : values) {
     th.deleteSpaces(val);
     th.tabToComma(val);
   }
 }
 
-void VtfParser::parseFile(const std::string &filename) {
+void VtfParser::parseFile(const std::string& filename) {
   std::fstream input(filename);
-  std::size_t lineNo = 1;
+  std::size_t  lineNo = 1;
 
   values.reserve(3000);
   for (std::string temp; std::getline(input, temp); ++lineNo) {
@@ -29,17 +29,17 @@ void VtfParser::parseFile(const std::string &filename) {
   }
 }
 
-void VtfParser::writeOutput(const std::string &outFile) {
+void VtfParser::writeOutput(const std::string& outFile) {
   std::ofstream output(outFile);
 
   output << columns << std::endl;
-  for (const auto &val : values) {
+  for (const auto& val : values) {
     output << val << std::endl;
   }
   std::cout << "Generating -> " << outFile << std::endl;
 }
 
-void VtfParser::vtfToCsv(const std::string &inFile) {
+void VtfParser::vtfToCsv(const std::string& inFile) {
   parseFile(inFile);
   processColumns();
   processValues();
@@ -48,21 +48,21 @@ void VtfParser::vtfToCsv(const std::string &inFile) {
   writeOutput(outFile);
 }
 
-void VtfParser::TextHelper::deleteQuotes(std::string &str) {
+void VtfParser::TextHelper::deleteQuotes(std::string& str) {
   std::string::size_type pos;
   while ((pos = str.find('\"')) != std::string::npos) {
     str.erase(pos, 1);
   }
 }
 
-void VtfParser::TextHelper::deleteSpaces(std::string &str) {
+void VtfParser::TextHelper::deleteSpaces(std::string& str) {
   std::string::size_type pos;
   while ((pos = str.find(' ')) != std::string::npos) {
     str.erase(pos, 1);
   }
 }
 
-void VtfParser::TextHelper::tabToComma(std::string &str) {
+void VtfParser::TextHelper::tabToComma(std::string& str) {
   std::string::size_type pos;
   while ((pos = str.find('\t')) != std::string::npos) {
     str.replace(pos, 1, ",");
@@ -75,7 +75,7 @@ void VtfParser::TextHelper::tabToComma(std::string &str) {
   }
 }
 
-std::string VtfParser::TextHelper::formatFileNmae(const std::string &src) {
+std::string VtfParser::TextHelper::formatFileNmae(const std::string& src) {
   auto ret = src;
   changeSuffix(ret, ".csv");
   sensorFormat(ret);
@@ -83,17 +83,17 @@ std::string VtfParser::TextHelper::formatFileNmae(const std::string &src) {
   return ret;
 }
 
-void VtfParser::TextHelper::changeSuffix(std::string &src,
-                                         const std::string &suffix) {
+void VtfParser::TextHelper::changeSuffix(std::string&       src,
+                                         const std::string& suffix) {
   auto pos = src.rfind('.');
   src.erase(pos, src.size() - pos);
   src += suffix;
 }
 
 // remove "1_" or "1" in filename
-void VtfParser::TextHelper::sensorFormat(std::string &str) {
-  std::string pattern1("sensors1_"); // billet_sensors11.vtf
-  std::string pattern2("sensors1");  // billet_sensors1_1.vtf
+void VtfParser::TextHelper::sensorFormat(std::string& str) {
+  std::string            pattern1("sensors1_"); // billet_sensors11.vtf
+  std::string            pattern2("sensors1");  // billet_sensors1_1.vtf
   std::string::size_type pos;
 
   if ((pos = str.find(pattern1)) != std::string::npos) {
